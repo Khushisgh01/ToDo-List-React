@@ -1,42 +1,277 @@
+/* Replace the full content of vite-project/src/App.css with this code. */
+
+/* Color Variables for easy theme switching */
+:root {
+  --primary-color: #646cff; /* Main Accent Blue */
+  --secondary-color: #4a50d2; 
+  --done-color: #28a745; /* Success Green */
+  --delete-color: #dc3545; /* Danger Red */
+  --bg-dark: #373636;
+  --bg-light: #ffffff;
+  --text-dark: #ffffff;
+  --text-light: #213547;
+  --card-bg-dark: #2a2a2a;
+  --card-bg-light: #f9f9f9;
+}
+
 #root {
-  max-width: 1280px;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 3rem;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* --- General Button Styling --- */
+button {
+  transition: all 0.3s ease;
+  padding: 0.7em 1.5em;
+  margin: 0 5px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* --- Input Field Styling --- */
+input.new-todo-input {
+  padding: 0.7em 1em;
+  border-radius: 12px;
+  border: 1px solid var(--primary-color);
+  font-size: 1em;
+  flex-grow: 1;
+  max-width: 500px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input.new-todo-input:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 3px rgba(100, 108, 255, 0.25);
+}
+
+/* --- Todo App Container (The main Card) --- */
+.todo-app {
+  background-color: var(--card-bg-light); 
+  padding: 30px 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Subtle shadow for 3D effect */
+}
+
+/* Dark Mode Overrides for Main Card */
+@media (prefers-color-scheme: dark) {
+  .todo-app {
+    background-color: var(--card-bg-dark);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   }
-  to {
-    transform: rotate(360deg);
+}
+
+h1 {
+  font-size: 2.5em;
+  color: var(--secondary-color);
+  margin-bottom: 25px;
+}
+
+h4 {
+  font-size: 1.5em;
+  color: var(--text-light);
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+@media (prefers-color-scheme: dark) {
+  h4 {
+    color: var(--text-dark);
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+.divider {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), var(--primary-color), rgba(0, 0, 0, 0));
+  margin: 25px 0;
+  opacity: 0.5;
+}
+
+/* --- Input and Add Button Layout --- */
+.input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.add-task-btn {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.add-task-btn:hover {
+  background-color: var(--secondary-color);
+}
+
+/* --- Todo List & Items --- */
+.todo-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.todo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  background-color: #f0f0f0; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border-left: 5px solid transparent; /* default state */
+}
+
+@media (prefers-color-scheme: dark) {
+  .todo-item {
+    background-color: #333333; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   }
 }
 
-.card {
-  padding: 2em;
+.todo-task {
+  flex-grow: 1;
+  text-align: left;
+  font-size: 1.1em;
+  color: var(--text-light);
+  word-break: break-word;
+  transition: all 0.3s ease;
 }
 
-.read-the-docs {
-  color: #888;
+@media (prefers-color-scheme: dark) {
+  .todo-task {
+    color: var(--text-dark);
+  }
+}
+
+/* Completed Task Styles */
+.todo-item.done {
+  background-color: #e6f7e9; /* Lighter green background */
+  opacity: 0.8;
+  border-left: 5px solid var(--done-color); /* Green highlight */
+}
+
+.todo-item.done .todo-task {
+  text-decoration-line: line-through; 
+  color: var(--done-color);
+}
+
+@media (prefers-color-scheme: dark) {
+  .todo-item.done {
+    background-color: #1f3a22; /* Darker green background */
+  }
+}
+
+/* --- Item Action Buttons --- */
+.item-actions {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  gap: 5px;
+}
+
+.action-btn {
+  padding: 5px 10px;
+  font-size: 0.85em;
+  border-radius: 8px;
+  white-space: nowrap; 
+}
+
+.mark-done-btn {
+  background-color: var(--done-color);
+  color: white;
+}
+
+.uppercase-btn {
+  background-color: #ffc107; /* Yellow */
+  color: #333;
+}
+
+.delete-btn {
+  background-color: var(--delete-color);
+  color: white;
+}
+
+/* --- Global Action Buttons --- */
+.global-actions {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; /* Allows wrapping on smaller screens */
+  gap: 10px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .global-actions {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+.global-btn {
+  font-size: 1em;
+  padding: 10px 20px;
+  font-weight: 700;
+}
+
+.uppercase-all-btn {
+  background-color: #ff8c00; /* Darker orange */
+  color: white;
+}
+
+.mark-all-done-btn {
+  background-color: var(--done-color);
+  color: white;
+}
+
+/* --- Responsive Adjustments (Mobile View) --- */
+@media (max-width: 768px) {
+  .todo-app {
+    padding: 20px;
+  }
+  .todo-item {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
+  }
+  .todo-task {
+    margin-bottom: 10px;
+  }
+  .item-actions {
+    margin-left: 0;
+    justify-content: flex-start;
+    width: 100%;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .input-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+  input.new-todo-input {
+    width: 100%;
+  }
+  .add-task-btn {
+    width: 100%;
+  }
 }

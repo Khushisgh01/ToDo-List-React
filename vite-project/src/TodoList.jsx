@@ -70,35 +70,64 @@ export default function TodoList(){
 
     
     return(
-        <div>
-            <input placeholder="Add a Task" value={newTodo} onChange={updateTodoValue}></input>
-            <br></br>
-            <button onClick={addNewTodo}>Add Task</button>
-            <br></br><br></br><br></br>
-            <hr></hr>
+        <div className="todo-app">
+            <h1>Awesome Todo List 📝</h1>
+
+            <div className="input-container">
+                <input 
+                    placeholder="Add a new task..." 
+                    value={newTodo} 
+                    onChange={updateTodoValue}
+                    className="new-todo-input"
+                />
+                <button onClick={addNewTodo} className="add-task-btn">Add Task</button>
+            </div>
+
+            <hr className="divider"></hr>
+            
             <h4> Tasks Todo </h4>
-            {/* all the list items we are adding should have a unique identifier for it  */}
-            {/* We can use uuid packeage in npm for assigning randomly unique value to each list item */}
-            {/* //for rendering array we use our map method  */}
-            <ul>
+
+            <ul className="todo-list">
                 {
                     todos.map((todo)=>{
+                        // Use CSS class 'done' for styling the completed task
+                        const todoClass = todo.isDone ? 'done' : '';
                         return(
-                            <li key={todo.id}>
-                            <span style={todo.isDone?{textDecorationLine:"line-through"}:{}}>{todo.task}</span>
-                            &nbsp;
-                            <button onClick={()=>deleteTodo(todo.id)}>Delete Task</button>
-                            <button onClick={()=>upperCaseOne(todo.id)}>UpperCase Task</button>
-                            <button onClick={()=>markAsDone(todo.id)}>Mark As Done</button>
-                        </li>
+                            <li key={todo.id} className={`todo-item ${todoClass}`}>
+                                {/* Removed inline style, using className for styling */}
+                                <span className="todo-task">{todo.task}</span>
+                                
+                                <div className="item-actions">
+                                    <button 
+                                        onClick={()=>markAsDone(todo.id)} 
+                                        className="action-btn mark-done-btn"
+                                        disabled={todo.isDone} // Functionality: disable if already done
+                                    >
+                                        Mark Done
+                                    </button>
+                                    <button 
+                                        onClick={()=>upperCaseOne(todo.id)} 
+                                        className="action-btn uppercase-btn"
+                                    >
+                                        UPPERCASE
+                                    </button>
+                                    <button 
+                                        onClick={()=>deleteTodo(todo.id)} 
+                                        className="action-btn delete-btn"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            </li>
                         )
-                        
                     })
                 }
             </ul>
-            <br></br>
-            <button onClick={upperCaseAll}>UpperCaseAll</button>
-            <button onClick={markAllDone}>Mark All as Done</button>
+            
+            <div className="global-actions">
+                <button onClick={upperCaseAll} className="global-btn uppercase-all-btn">UPPERCASE ALL</button>
+                <button onClick={markAllDone} className="global-btn mark-all-done-btn">Mark All as Done</button>
+            </div>
 
         </div>
     )
