@@ -11,12 +11,40 @@ export default function TodoList(){
     //todos ki value tab update hogi jab humne input ke andr kkuch add krdiya and then add button pe click krdiya
     //function to add
     let addNewTodo=()=>{
-        setTodos([...todos,{task:newTodo,id:uuidv4()}]);
+        setTodos((prevTodos)=>{
+            return [...prevTodos,{task:newTodo,id:uuidv4()}]});
         setNewTodo("");
     };
     let updateTodoValue=(event)=>{
         setNewTodo(event.target.value);
     }
+    //we are using prevTodos concept as its value is depending on the previous values
+    let deleteTodo=(id)=>{
+        setTodos((prevTodos)=>todos.filter((prevTodos)=>prevTodos.id!=id));
+    };
+
+    let upperCaseAll=()=>{
+        setTodos((prevTodos)=>prevTodos.map((todo)=>{
+            return{
+                ...todo,
+                task:todo.task.toUpperCase(),
+            };
+    }));
+    };
+
+    let upperCaseOne=(id)=>{
+        setTodos((prevTodos)=>
+            prevTodos.map((todo)=>{
+                if(todo.id==id){
+                    return{
+                        ...todo,
+                        task:todo.task.toUpperCase(),
+                    };
+                }else{
+                    return todo;
+                }
+            }));
+    };
     return(
         <div>
             <input placeholder="Add a Task" value={newTodo} onChange={updateTodoValue}></input>
@@ -31,10 +59,20 @@ export default function TodoList(){
             <ul>
                 {
                     todos.map((todo)=>{
-                        return<li key={todo.id}>{todo.task}</li>
+                        return(
+                            <li key={todo.id}>
+                            <span>{todo.task}</span>
+                            &nbsp;
+                            <button onClick={()=>deleteTodo(todo.id)}>Delete Task</button>
+                            <button onClick={()=>upperCaseOne(todo.id)}>UpperCase Task</button>
+                        </li>
+                        )
+                        
                     })
                 }
             </ul>
+            <br></br>
+            <button onClick={upperCaseAll}>UpperCaseAll</button>
 
         </div>
     )
