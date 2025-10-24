@@ -4,7 +4,7 @@ export default function TodoList(){
     //initialized with empty or sampleTask
     //  {/* every todo must have 2 things i.e.  task and its unique id for this we will make array of objects */}
 
-    let [todos,setTodos]=useState([{task:"Sample Task",id:uuidv4()}]);
+    let [todos,setTodos]=useState([{task:"Sample Task",id:uuidv4(),isDone:false}]);
     //shuruaat me naye task ki value is empty
     let [newTodo,setNewTodo]=useState("");
     //input ke andr kuch bhi change hoga that will change our newTodo
@@ -12,7 +12,7 @@ export default function TodoList(){
     //function to add
     let addNewTodo=()=>{
         setTodos((prevTodos)=>{
-            return [...prevTodos,{task:newTodo,id:uuidv4()}]});
+            return [...prevTodos,{task:newTodo,id:uuidv4(),isDone:false}]});
         setNewTodo("");
     };
     let updateTodoValue=(event)=>{
@@ -32,6 +32,15 @@ export default function TodoList(){
     }));
     };
 
+    let markAllDone=()=>{
+        setTodos((prevTodos)=>prevTodos.map((todo)=>{
+            return{
+                ...todo,
+                isDone:true,
+            };
+    }));
+    };
+
     let upperCaseOne=(id)=>{
         setTodos((prevTodos)=>
             prevTodos.map((todo)=>{
@@ -45,6 +54,21 @@ export default function TodoList(){
                 }
             }));
     };
+    let markAsDone=(id)=>{
+        setTodos((prevTodos)=>
+            prevTodos.map((todo)=>{
+                if(todo.id==id){
+                    return{
+                        ...todo,
+                        isDone:true,
+                    };
+                }else{
+                    return todo;
+                }
+            }));
+    };
+
+    
     return(
         <div>
             <input placeholder="Add a Task" value={newTodo} onChange={updateTodoValue}></input>
@@ -61,10 +85,11 @@ export default function TodoList(){
                     todos.map((todo)=>{
                         return(
                             <li key={todo.id}>
-                            <span>{todo.task}</span>
+                            <span style={todo.isDone?{textDecorationLine:"line-through"}:{}}>{todo.task}</span>
                             &nbsp;
                             <button onClick={()=>deleteTodo(todo.id)}>Delete Task</button>
                             <button onClick={()=>upperCaseOne(todo.id)}>UpperCase Task</button>
+                            <button onClick={()=>markAsDone(todo.id)}>Mark As Done</button>
                         </li>
                         )
                         
@@ -73,6 +98,7 @@ export default function TodoList(){
             </ul>
             <br></br>
             <button onClick={upperCaseAll}>UpperCaseAll</button>
+            <button onClick={markAllDone}>Mark All as Done</button>
 
         </div>
     )
